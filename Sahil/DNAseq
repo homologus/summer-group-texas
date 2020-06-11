@@ -1,4 +1,47 @@
+import re
+
+def proteinMaker(dna):
+    temp = ""
+    proteinseq = ""
+    for ele in dna:
+        if ele == "T":
+            temp += "U"
+        else:
+            temp += ele
+    Dict = dict.fromkeys(["GCU", "GCC", "GCA", "GCG"], "A")
+    Dict.update(dict.fromkeys(["CGU", "CGC", "CGA", "CGG", "AGA", "AGG"], "R"))
+    Dict.update(dict.fromkeys(["AAU", "AAC"], "N"))
+    Dict.update(dict.fromkeys(["GAU", "GAC"], "D"))
+    Dict.update(dict.fromkeys(["UGU", "UGC"], "C"))
+    Dict.update(dict.fromkeys(["CAA", "CAG"], "Q"))
+    Dict.update(dict.fromkeys(["GAA", "GAG"], "E"))
+    Dict.update(dict.fromkeys(["GGU", "GGC", "GGA", "GGG"], "G"))
+    Dict.update(dict.fromkeys(["CAU", "CAC"], "H"))
+    Dict.update(dict.fromkeys(["AUG"], "M"))
+    Dict.update(dict.fromkeys(["AUU", "AUC", "AUA"], "I"))
+    Dict.update(dict.fromkeys(["CUU", "CUC", "CUA", "CUG", "UUA", "UUG"], "L"))
+    Dict.update(dict.fromkeys(["AAA", "AAG"], "K"))
+    Dict.update(dict.fromkeys(["UUU", "UUC"], "F"))
+    Dict.update(dict.fromkeys(["CCU", "CCC", "CCA", "CCG"], "P"))
+    Dict.update(dict.fromkeys(["UCU", "UCC", "UCA", "UCG", "AGU", "AGC"], "S"))
+    Dict.update(dict.fromkeys(["ACU", "ACC", "ACA", "ACG"], "T"))
+    Dict.update(dict.fromkeys(["UGG"], "W"))
+    Dict.update(dict.fromkeys(["UAU", "UAC"], "Y"))
+    Dict.update(dict.fromkeys(["GUU", "GUC", "GUA", "GUG"], "V"))
+    Dict.update(dict.fromkeys(["UAA", "UGA", "UAG"], "*"))
+    for i in range(0, len(dna) // 3 * 3, 3):
+        proteinseq += Dict.get(temp[i:i + 3])
+    hundreds = proteinseq.split("*")
+    return hundreds
+
+
 f = open("/share/Ecoli/GCA_000005845.2_ASM584v2_genomic.fna", "r")
+f.readline()
+temp = f.read()
+dnaarr = re.findall("\S", temp)
 dna = ""
-for x in f:
-    print(x)
+for x in dnaarr:
+    dna+=x
+print("Length =", len(dna))
+print(proteinMaker(dna))
+f.close()
