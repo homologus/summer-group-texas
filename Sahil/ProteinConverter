@@ -1,11 +1,3 @@
-import re
-def reverseComplement(dna):
-    List = ["A", "G", "C", "T"]
-    ret = ""
-    for ele in range(0, len(dna)):
-        ret+= List[3-List.index(dna[len(dna) - 1 - ele:len(dna) - ele])]
-    return ret
-
 def proteinMaker(dna):
     temp = ""
     proteinseq = ""
@@ -43,26 +35,13 @@ def proteinMaker(dna):
         finalseq+= ele
     return finalseq
 
-f = open("/share/Ecoli/GCA_000005845.2_ASM584v2_genomic.gff", "r")#
-s = open("/share/Ecoli/GCA_000005845.2_ASM584v2_genomic.fna", "r")#
-s.readline()
-temp = s.read()
+f = open("/share/Ecoli/GCA_000005845.2_ASM584v2_genomic.fna", "r")#/share/Ecoli/GCA_000005845.2_ASM584v2_genomic.fna
+f.readline()
+temp = f.read()
 dnaf = ""
 for ele in temp.split("\n"):
-    dnaf+=ele
-dnar = reverseComplement(dnaf)
-for line in f:
-    if "CDS" in line:
-        info = re.split("[\s,;]+", line)
-        loc = "[location="
-        intoDNA = ""
-        if info[6] == "+":
-            loc += info[3] + "..." + info[4] + "]"
-            intoDNA = dnaf[int(info[3])-1:int(info[4])]
-        else:
-            loc += "complementary(" + info[3] + "..." + info[4] + ")]"
-            intoDNA = dnar[int(info[3]) - 1:int(info[4])]
-        print(loc)
-        print(proteinMaker(intoDNA))
-f.close()
-s.close()
+    dnaf += ele
+print(proteinMaker(dnaf))
+
+
+
