@@ -1,0 +1,67 @@
+import re
+def reverse(sequence):
+        backwards=""
+        for i in range(len(sequence)-1,-1,-1):
+                backwards=backwards+sequence[i]
+        return backwards
+def complement(sequence):
+        sequence2=""
+        back=reverse(sequence)
+        T={'A':'T','G':'C','T':'A','C':'G'}
+        for a in back:
+                sequence2=sequence2+T[a]
+        return sequence2
+def TranslateToProtein(sequence):
+	sequence2=""
+	T={'TTT':'F', 'TTC':'F', 'TTA':'L', 'TTG':'L', 'TCT':'S', 'TCC':'S', 'TCA':'S', 'TCG':'S',
+	'TAT':'Y', 'TAC':'Y', 'TAA':'STOP', 'TAG':'STOP', 'TGT':'C', 'TGC':'C', 'TGA':'STOP', 'TGG':'W',
+	'CTT':'L', 'CTC':'L', 'CTA':'L', 'CTG':'L', 'CCT':'P', 'CCC':'P', 'CCA':'P', 'CCG':'P', 'CAT':'H',
+	'CAC':'H', 'CAA':'Q', 'CAG':'Q', 'CGT':'R', 'CGC':'R', 'CGA':'R','CGG':'R',
+	'ATT':'I','ATC':'I','ATA':'I','ATG':'M','ACT':'T','ACC':'T','ACA':'T','ACG':'T',
+	'AAT':'N','AAC':'N','AAA':'K','AAG':'K','AGT':'S','AGC':'S','AGA':'R','AGG':'R',
+	'GTT':'V','GTC':'V','GTA':'V','GTG':'V','GCT':'A','GCC':'A','GCA':'A','GCG':'A',
+	'GAT':'D','GAC':'D','GAA':'E','GAG':'E','GGT':'G','GGC':'G','GGC':'G','GGA':'G','GGG':'G'};
+	for i in range(0,len(sequence)-2,3):
+		codon=sequence[i]+sequence[i+1]+sequence[i+2]
+		sequence2=sequence2+T[codon]
+	return sequence2
+f = open("/share/Ecoli/GCA_000005845.2_ASM584v2_genomic.gff", "r")
+x=f.readlines()
+f = open("/share/Ecoli/GCA_000005845.2_ASM584v2_genomic.fna","r")
+y=f.readlines()
+genome=""
+g="gene"
+for i in range(1,len(y)):
+	genome=genome+y[i].strip()
+for i in range(9,len(x),1):
+	split1=x[i-1].rsplit()
+	split2=x[i].rsplit()
+	if split1[2]==g:
+		if split2[2]=="CDS":
+			d=""
+			e=""
+			for i in range(8,len(split2)):
+				d=d+" "+split2[i]
+			infosplit1=split1[8].rsplit(";")
+			infosplit2=d.rsplit(";")
+			sequence=""
+			for i in range(int(split1[3])-1,int(split1[4])):
+				sequence=sequence+genome[i]
+			listsequence=sequence.rsplit()
+			realsequence=""
+			for z in listsequence:
+				realsequence=realsequence+z
+			change=""
+			if split1[6]=="-":
+				realsequence=complement(realsequence)
+				change="complement "
+			proteinName=infosplit2[8].lstrip("product")
+			proteinName=proteinName.lstrip("=")
+			info=">lcl|"+split1[0]+" ["+infosplit2[0]+"] [protein name= "+proteinName+"] [Location="+change+split1[3]+"..."+split1[4]+"]"
+			print(info) 
+			print(realsequence)
+			proteinsequence=TranslateToProtein(realsequence)
+			print("")
+			print(proteinsequence)
+
+	
