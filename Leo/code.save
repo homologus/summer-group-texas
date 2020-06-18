@@ -1,6 +1,0 @@
-import re
-f = open("/share/Ecoli/GCA_000005845.2_ASM584v2_cds_from_genomic.fna", "r")
-x=f.read()
-a=x[10].rstrip()
-print(x)
-
