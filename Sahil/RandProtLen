@@ -1,0 +1,33 @@
+from Bio.SeqUtils import GC
+from Bio.Seq import Seq
+import random
+avg = 0
+sim = 2000
+for _ in range (0, sim):#simulations
+    output = ""
+    a = t = g = c = 0
+    for _1 in range(0, 1000):#length of seq
+        num = random.uniform(0, 1)
+        a = t = g = c = 0
+        if 0 <= num and num<.25:
+            output+="A"
+            a+=1
+        elif .25<=num and num <.5:
+            output+="T"
+            t+=1
+        elif .5<=num and num < .75:
+            output+= "G"
+            g+=1
+        elif .75<= num and num <1:
+            output+="C"
+            c+=1
+    read = Seq(output)
+    seq = read.translate()
+    List = seq.split("*")
+    max = 0
+    for _2 in List:
+        if len(_2) > max:
+            max = len(_2)
+    avg += max
+    print("Trial Number:", _+1, " Largest Protein:", max)
+print(avg/sim)

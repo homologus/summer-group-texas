@@ -1,0 +1,18 @@
+
+f=open("/share/Ecoli/GCA_000005845.2_ASM584v2_genomic.fna","r")
+s=open("/share/Plasmodium/PfGB4.Jul2015.fasta","r")
+f.readline()
+s.readline()
+l1 = (f.read(),s.read())
+a = t = g = c = 0
+for _ in l1:
+    for ele in _:
+        if ele == "A":
+            a += 1
+        elif ele == "T":
+            t += 1
+        elif ele == "G":
+            g += 1
+        elif ele == "C":
+            c += 1
+    print((g+c)/(a+t+g+c))

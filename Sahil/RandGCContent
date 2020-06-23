@@ -1,0 +1,36 @@
+from Bio.SeqUtils import GC
+from Bio.Seq import Seq
+import random
+avg = 0
+sim = 1000
+onepercenttimes = 3
+dnalen = 10000
+for _ in range (0, sim):#simulations (changes in GC content)
+    cumulative = 0 #helps keep avg of avg max protein len over the onepercenttimes simulations
+    gccumulative = 0 #helps keep avg of avg gc content over the onepercenttimes simulations
+    for _2 in range(0, onepercenttimes):#simulate one percentage onepercenttimes times
+        dna = ""
+        max = 0
+        for _3 in range(0, dnalen):
+            num = random.uniform(0, 1)
+            num2= random.uniform(0,1)
+            if num < _/(sim-1): #if sim = 5, then the num will be 0, .25, .5, .75, .1
+                if num2 < .5:
+                    dna += "G"
+                else:
+                    dna += "C"
+            else:
+                if num2 < .5:
+                    dna += "A"
+                else:
+                    dna += "T"
+        read = Seq(dna)
+        List = read.translate().split("*")
+        for _4 in List:
+            if len(_4) > max:
+                max = len(_4)
+        gccumulative += GC(read)
+        cumulative+= max
+    print("Trial Number:", "{:4d}".format(_+1), " GC%: ", "{:5.1f}".format(gccumulative/onepercenttimes), " AMPL ", "{:6.1f}".format(cumulative/onepercenttimes)) #AMPL = Average Max Protein Length
+print(avg/sim)
+
