@@ -1,0 +1,17 @@
+import re
+from Bio import SeqIO
+from Bio.SeqUtils import GC
+from Bio.Seq import Seq
+reads = list(SeqIO.parse("/share/SARS/seq.fasta", "fasta"))
+for i in range(3):
+        rem=(len(reads[0].seq)-i)%3
+        sequence=reads[0].seq[i:len(reads[0].seq)-rem]
+        proteinseq=sequence.translate()
+        proteinlist=proteinseq.rsplit("*")
+        for a in proteinlist:
+                if len(a)>=100:
+                        print(a)
+                        print("")
+
+
+
